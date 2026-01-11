@@ -1,0 +1,9 @@
+services:
+  postgres:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: worldvault
+      POSTGRES_PASSWORD: worldvault
+      POSTGRES_DB: worldvault
+    ports:
+      - "5432:5432"

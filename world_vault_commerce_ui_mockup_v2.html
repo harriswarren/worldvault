@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>World Vault — Commerce Gateway UI Mockup</title>
+  <style>
+    :root{
+      --bg:#0b0c10; --text:#e7e9ee; --muted:#aab0bd; --border:#252a36;
+      --good:#6aff9a; --warn:#ffcc66; --bad:#ff6a6a; --radius:14px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      --sans: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:var(--sans);background: radial-gradient(900px 400px at 10% 0%, rgba(106,255,214,.18) 0%, rgba(0,0,0,0) 60%), var(--bg);color:var(--text);}
+    .wrap{max-width:1200px;margin:0 auto;padding:26px 22px 44px;}
+    .top{display:flex;justify-content:space-between;gap:14px;align-items:flex-start;margin-bottom:14px;}
+    h1{margin:0;font-size:18px;letter-spacing:.2px;}
+    .sub{margin:6px 0 0;color:var(--muted);font-size:13px;max-width:900px;}
+    .grid{display:grid;grid-template-columns: repeat(12, 1fr);gap:14px;}
+    .card{background: rgba(255,255,255,.03);border:1px solid var(--border);border-radius:var(--radius);padding:14px;}
+    .card h2{margin:0 0 10px;font-size:14px;}
+    .mono{font-family:var(--mono);}
+    .pill{font-size:11px;padding:3px 8px;border-radius:999px;background: rgba(255,255,255,.03);border:1px solid var(--border);color:var(--muted);}
+    .pill.good{ color:var(--good); border-color: rgba(106,255,154,.25); background: rgba(106,255,154,.06); }
+    .pill.warn{ color:var(--warn); border-color: rgba(255,204,102,.35); background: rgba(255,204,102,.08); }
+    .pill.bad{ color:var(--bad); border-color: rgba(255,106,106,.35); background: rgba(255,106,106,.08); }
+    .row{display:flex;gap:8px;flex-wrap:wrap}
+    table{width:100%;border-collapse:separate;border-spacing:0;border:1px solid var(--border);border-radius:12px;overflow:hidden;}
+    th,td{padding:10px 10px;font-size:12px;border-bottom:1px solid var(--border);vertical-align:top;}
+    th{background: rgba(255,255,255,.03);color:var(--muted);text-align:left;font-weight:600;}
+    tr:last-child td{border-bottom:none;}
+    .btn{border:1px solid var(--border);background: rgba(255,255,255,.04);color:var(--text);padding:10px 12px;border-radius:12px;cursor:pointer;font-size:13px;}
+    .btn.primary{border-color: rgba(106,255,214,.40);background: rgba(106,255,214,.12);}
+    .btn.danger{border-color: rgba(255,106,106,.45);background: rgba(255,106,106,.10);}
+    .hr{height:1px;background:var(--border);margin:12px 0;}
+    .kpi{display:grid;grid-template-columns: repeat(3, 1fr);gap:12px;}
+    .kpi .box{border:1px solid var(--border);border-radius:12px;padding:12px;background: rgba(0,0,0,.18);}
+    .kpi .label{font-size:11px;color:var(--muted)}
+    .kpi .val{font-size:16px;margin-top:4px}
+    .small{font-size:12px;color:var(--muted)}
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <div>
+      <h1>World Vault Commerce Gateway</h1>
+      <div class="sub">Budget-aware agent routing across paid MCP tools. Every memory access is consented, metered, and receipted.</div>
+    </div>
+    <div class="row">
+      <span class="pill good">Nevermined: connected</span>
+      <span class="pill good">MCP: registry online</span>
+      <span class="pill warn">Budget cap: $0.25</span>
+    </div>
+  </div>
+
+  <div class="grid">
+    <div class="card" style="grid-column: span 4;">
+      <h2>Budgets</h2>
+      <div class="kpi">
+        <div class="box"><div class="label">Daily</div><div class="val">$2.00</div></div>
+        <div class="box"><div class="label">Workflow</div><div class="val">$0.25</div></div>
+        <div class="box"><div class="label">Remaining</div><div class="val">$0.18</div></div>
+      </div>
+      <div class="hr"></div>
+      <div class="small">Policy: hold any single call over $0.05 for human approval.</div>
+    </div>
+
+    <div class="card" style="grid-column: span 8;">
+      <h2>Paid MCP Capabilities (discovered)</h2>
+      <table>
+        <thead><tr><th>Tool</th><th>Meter</th><th>Price</th><th>Plan</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">worldvault.profile.read</td><td>per request</td><td>$0.002</td><td class="mono">plan_profile_v1</td><td><span class="pill good">Ready</span></td></tr>
+          <tr><td class="mono">worldvault.prefs.write</td><td>per write</td><td>$0.010</td><td class="mono">plan_prefs_write_v1</td><td><span class="pill warn">HITL</span></td></tr>
+          <tr><td class="mono">leads.apify.enrich</td><td>per request</td><td>$0.020</td><td class="mono">plan_apify_enrich_v1</td><td><span class="pill good">Ready</span></td></tr>
+          <tr><td class="mono">copy.subjectline.optimize</td><td>per token</td><td>$0.005</td><td class="mono">plan_subject_v1</td><td><span class="pill good">Ready</span></td></tr>
+        </tbody>
+      </table>
+      <div class="hr"></div>
+      <div class="row">
+        <button class="btn">Refresh Discovery</button>
+        <button class="btn primary">Run Workflow</button>
+        <button class="btn danger">Revoke Consent</button>
+      </div>
+    </div>
+
+    <div class="card" style="grid-column: span 7;">
+      <h2>Workflow Timeline</h2>
+      <table>
+        <thead><tr><th>Step</th><th>Action</th><th>Cost</th><th>Result</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>Discover tools via MCP</td><td>$0.00</td><td><span class="pill good">OK</span></td></tr>
+          <tr><td>2</td><td>Read profile.name (paid)</td><td>$0.002</td><td><span class="pill good">PAID</span></td></tr>
+          <tr><td>3</td><td>A2A async: enrich 10 leads (paid)</td><td>$0.020</td><td><span class="pill good">DONE</span></td></tr>
+          <tr><td>4</td><td>Draft outreach copy</td><td>$0.00</td><td><span class="pill good">OK</span></td></tr>
+          <tr><td>5</td><td>Write prefs.outreach_tone (paid)</td><td>$0.010</td><td><span class="pill warn">HOLD</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card" style="grid-column: span 5;">
+      <h2>Receipts (mock)</h2>
+      <div class="small">Export these as JSONL for judging.</div>
+      <div class="hr"></div>
+      <pre class="mono" style="margin:0;font-size:11px;white-space:pre-wrap;">
+{"t":"11:03:01","evt":"payment_settled","tool":"worldvault.profile.read","amount":"0.002","asset":"USDC","tx":"0xabc..."}
+{"t":"11:03:04","evt":"audit","decision":"ALLOW","scp":"profile:name.read","jti":"ctok_31afc1"}
+{"t":"11:04:12","evt":"payment_settled","tool":"leads.apify.enrich","amount":"0.020","asset":"USDC","tx":"0xdef..."}
+{"t":"11:05:44","evt":"audit","decision":"HOLD","scp":"prefs:outreach_tone.write","reason":"requires_human_approval"}
+      </pre>
+    </div>
+  </div>
+</div>
+</body>
+</html>

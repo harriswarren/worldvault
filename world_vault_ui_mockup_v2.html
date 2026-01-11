@@ -1,0 +1,297 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>World Vault — Consent & Revocation UI Mockup</title>
+  <style>
+    :root{
+      --bg:#0b0c10; --text:#e7e9ee; --muted:#aab0bd; --border:#252a36;
+      --good:#6aff9a; --warn:#ffcc66; --bad:#ff6a6a; --radius:14px;
+      --shadow: 0 12px 30px rgba(0,0,0,.35);
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      --sans: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:var(--sans);background: radial-gradient(900px 400px at 10% 0%, rgba(106,166,255,.20) 0%, rgba(0,0,0,0) 60%), var(--bg);color:var(--text);}
+    .app{display:grid;grid-template-columns: 320px 1fr;min-height:100vh;}
+    .sidebar{border-right:1px solid var(--border);background: linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01));padding:22px 18px;position:sticky;top:0;height:100vh;}
+    .brand{display:flex;align-items:center;gap:12px;margin-bottom:12px;}
+    .logo{width:38px;height:38px;border-radius:12px;background: linear-gradient(135deg, rgba(106,166,255,.95), rgba(106,255,214,.85));box-shadow: var(--shadow);}
+    .brand h1{font-size:14px;margin:0;letter-spacing:.2px;}
+    .brand p{font-size:12px;margin:2px 0 0;color:var(--muted)}
+    .chips{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 14px;}
+    .badge{font-size:11px;padding:3px 8px;border-radius:999px;background: rgba(255,255,255,.03);border:1px solid var(--border);color:var(--muted);}
+    .badge.good{ color:var(--good); border-color: rgba(106,255,154,.25); background: rgba(106,255,154,.06); }
+    .badge.warn{ color:var(--warn); border-color: rgba(255,204,102,.35); background: rgba(255,204,102,.08); }
+    .badge.bad{ color:var(--bad); border-color: rgba(255,106,106,.35); background: rgba(255,106,106,.08); }
+    .nav{display:flex;flex-direction:column;gap:6px;margin-top:6px;}
+    .nav button{all:unset;cursor:pointer;padding:10px 10px;border-radius:12px;color:var(--muted);display:flex;align-items:center;justify-content:space-between;border:1px solid transparent;}
+    .nav button:hover{ background: rgba(255,255,255,.04); color:var(--text) }
+    .nav button.active{ background: rgba(106,166,255,.10); border-color: rgba(106,166,255,.25); color:var(--text); }
+    .content{padding:26px 26px 40px;}
+    .topbar{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:18px;}
+    .topbar h2{ margin:0;font-size:18px;letter-spacing:.2px; }
+    .subtitle{ margin:6px 0 0;color:var(--muted);font-size:13px;max-width:900px; }
+    .grid{display:grid;grid-template-columns: repeat(12, 1fr);gap:14px;}
+    .card{background: rgba(255,255,255,.03);border:1px solid var(--border);border-radius: var(--radius);box-shadow: 0 8px 24px rgba(0,0,0,.22);padding:14px;}
+    .card h3{ margin:0 0 8px; font-size:14px; }
+    .muted{ color:var(--muted); font-size:12px; }
+    .mono{ font-family:var(--mono); }
+    label{display:block;font-size:12px;color:var(--muted);margin:10px 0 6px;}
+    input, select, textarea{width:100%;padding:10px 10px;border-radius:12px;border:1px solid var(--border);background: rgba(0,0,0,.25);color:var(--text);outline:none;font-size:12px;}
+    textarea{min-height:110px;resize:vertical;font-family:var(--mono);}
+    .row{display:grid;grid-template-columns: 1fr 1fr;gap:12px;}
+    .btn{border:1px solid var(--border);background: rgba(255,255,255,.04);color:var(--text);padding:10px 12px;border-radius:12px;cursor:pointer;font-size:13px;}
+    .btn.primary{ border-color: rgba(106,166,255,.45); background: rgba(106,166,255,.16); }
+    .btn.danger{ border-color: rgba(255,106,106,.45); background: rgba(255,106,106,.10); }
+    .hr{height:1px;background:var(--border);margin:12px 0;}
+    table{width:100%;border-collapse:separate;border-spacing:0;overflow:hidden;border-radius:12px;border:1px solid var(--border);}
+    th, td{padding:10px 10px;font-size:12px;border-bottom:1px solid var(--border);vertical-align:top;}
+    th{text-align:left;color:var(--muted);background: rgba(255,255,255,.03);font-weight:600;letter-spacing:.2px;}
+    tr:last-child td{border-bottom:none;}
+    .callout{border:1px solid rgba(106,166,255,.35);background: rgba(106,166,255,.08);border-radius: 14px;padding:12px;}
+    .section{display:none;}
+    .section.active{display:block;}
+  </style>
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="logo" aria-hidden="true"></div>
+      <div>
+        <h1>World Vault</h1>
+        <p>User-owned memory + consent</p>
+      </div>
+    </div>
+
+    <div class="chips">
+      <span class="badge good">Vault Online</span>
+      <span class="badge">DID ready</span>
+      <span class="badge warn">TTL short</span>
+    </div>
+
+    <nav class="nav" id="nav">
+      <button class="active" data-target="issue">Issue Consent <span class="badge">JWT</span></button>
+      <button data-target="vault">Vault Data <span class="badge">Encrypted</span></button>
+      <button data-target="revocation">Revocation <span class="badge bad">Live</span></button>
+      <button data-target="audit">Audit & Receipts <span class="badge">JSONL</span></button>
+    </nav>
+
+    <div class="hr"></div>
+    <div class="muted">
+      Demo tip: Issue consent, run a paid read, then revoke and show a blocked call plus cache purge in audit.
+    </div>
+  </aside>
+
+  <main class="content">
+    <section class="section active" id="issue">
+      <div class="topbar">
+        <div>
+          <h2>Issue Consent</h2>
+          <p class="subtitle">Create a short-lived Consent Token scoped to fields and purpose. Token is presented to the MemMachine Policy Adapter on every read or write.</p>
+        </div>
+        <div style="display:flex;gap:10px;align-items:center;">
+          <button class="btn">Preview JWT</button>
+          <button class="btn primary">Issue Token</button>
+        </div>
+      </div>
+
+      <div class="grid">
+        <div class="card" style="grid-column: span 6;">
+          <h3>Principals</h3>
+          <label>User DID (sub)</label>
+          <input value="did:wv:user:0x1234...abcd"/>
+          <label>Agent DID (act, Cobra)</label>
+          <input value="did:cobra:agent:orchestrator:0x9f...01"/>
+          <div class="row">
+            <div>
+              <label>TTL</label>
+              <select><option>5 minutes</option><option selected>10 minutes</option><option>15 minutes</option></select>
+            </div>
+            <div>
+              <label>Purpose</label>
+              <input value="outreach_personalization"/>
+            </div>
+          </div>
+          <div class="hr"></div>
+          <h3>Scopes</h3>
+          <div class="row">
+            <div>
+              <label>Read scopes</label>
+              <textarea spellcheck="false">profile:name.read
+prefs:outreach_tone.read
+prefs:writing_style.read</textarea>
+            </div>
+            <div>
+              <label>Write scopes</label>
+              <textarea spellcheck="false">prefs:outreach_tone.write</textarea>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" style="grid-column: span 6;">
+          <h3>Limits</h3>
+          <div class="row">
+            <div><label>Max reads</label><input value="30"/></div>
+            <div><label>Max writes</label><input value="5"/></div>
+          </div>
+          <div class="row">
+            <div><label>Rate limit (per minute)</label><input value="10"/></div>
+            <div><label>Bytes cap</label><input value="65536"/></div>
+          </div>
+          <label>Resource allowlist (res)</label>
+          <textarea spellcheck="false">["profile.name", "prefs.outreach_tone", "prefs.writing_style"]</textarea>
+          <div class="hr"></div>
+          <div class="callout">
+            <div style="font-weight:600;font-size:13px;margin-bottom:4px;">Optional: Proof of Possession</div>
+            <div class="muted">For the hackathon, keep PoP off unless you have time. Toggle PoP later for stronger token binding.</div>
+          </div>
+        </div>
+
+        <div class="card" style="grid-column: span 12;">
+          <h3>Consent Token Preview (mock)</h3>
+          <textarea spellcheck="false">header: {"alg":"EdDSA","typ":"JWT","kid":"wv_jwks_1"}
+payload: {
+  "iss":"did:wv:issuer:main",
+  "sub":"did:wv:user:0x1234...abcd",
+  "act":"did:cobra:agent:orchestrator:0x9f...01",
+  "aud":"memmachine-policy-adapter",
+  "scp":["profile:name.read","prefs:outreach_tone.read","prefs:writing_style.read","prefs:outreach_tone.write"],
+  "res":["profile.name","prefs.outreach_tone","prefs.writing_style"],
+  "purpose":"outreach_personalization",
+  "limits":{"max_reads":30,"max_writes":5,"rate_per_min":10,"bytes_cap":65536},
+  "jti":"ctok_31afc1",
+  "iat":1736470000,
+  "exp":1736470600
+}</textarea>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="vault">
+      <div class="topbar">
+        <div>
+          <h2>Vault Data</h2>
+          <p class="subtitle">Encrypted profile store. MemMachine keeps pointers plus short-lived working memory.</p>
+        </div>
+        <div style="display:flex;gap:10px;align-items:center;">
+          <button class="btn">Rotate Keys</button>
+          <button class="btn primary">Add Memory</button>
+        </div>
+      </div>
+
+      <div class="grid">
+        <div class="card" style="grid-column: span 7;">
+          <h3>Profile and Preferences (redacted)</h3>
+          <table>
+            <thead><tr><th>Field</th><th>Value (redacted)</th><th>Class</th></tr></thead>
+            <tbody>
+              <tr><td class="mono">profile.name</td><td>H****s</td><td><span class="badge warn">Sensitive</span></td></tr>
+              <tr><td class="mono">prefs.outreach_tone</td><td>direct, friendly, concise</td><td><span class="badge">Preference</span></td></tr>
+              <tr><td class="mono">prefs.writing_style</td><td>no emojis, no long dashes</td><td><span class="badge">Preference</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="card" style="grid-column: span 5;">
+          <h3>Pointer Model</h3>
+          <div class="muted">MemMachine stores pointers and signed envelopes, not raw sensitive values.</div>
+          <div class="hr"></div>
+          <textarea spellcheck="false">memmachine_pointer = {
+  "type":"wv_pointer",
+  "vault_ref":"wv://enc/profile.name#v3",
+  "envelope_sig":"sig_ed25519_..."
+}</textarea>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="revocation">
+      <div class="topbar">
+        <div>
+          <h2>Revocation</h2>
+          <p class="subtitle">Revoke consent and push cache purge to MemMachine via webhook. Calls using revoked tokens must fail immediately.</p>
+        </div>
+        <div style="display:flex;gap:10px;align-items:center;">
+          <button class="btn danger">Revoke Token</button>
+          <button class="btn primary">Send Webhook</button>
+        </div>
+      </div>
+
+      <div class="grid">
+        <div class="card" style="grid-column: span 7;">
+          <h3>Webhook Payload (mock)</h3>
+          <textarea spellcheck="false">{
+  "event_type":"CONSENT_REVOKED",
+  "subject_did":"did:wv:user:0x1234...abcd",
+  "agent_did":"did:cobra:agent:orchestrator:0x9f...01",
+  "jti":"ctok_31afc1",
+  "scopes":["profile:name.read","prefs:outreach_tone.read","prefs:outreach_tone.write"],
+  "resources":["profile.name","prefs.outreach_tone"],
+  "reason":"user_revoked",
+  "idempotency_key":"rev_8f2c"
+}</textarea>
+        </div>
+        <div class="card" style="grid-column: span 5;">
+          <h3>Cache Purge Result</h3>
+          <div class="muted">Expected adapter actions</div>
+          <div class="hr"></div>
+          <table>
+            <thead><tr><th>Action</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td>Invalidate sessions</td><td><span class="badge good">OK</span></td></tr>
+              <tr><td>Purge cached pointers</td><td><span class="badge good">OK</span></td></tr>
+              <tr><td>Log audit event</td><td><span class="badge good">OK</span></td></tr>
+              <tr><td>Block future calls</td><td><span class="badge good">OK</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="audit">
+      <div class="topbar">
+        <div>
+          <h2>Audit & Receipts</h2>
+          <p class="subtitle">Audit trail for consent, reads, writes, payments, and revocations. Exportable for judging.</p>
+        </div>
+        <div style="display:flex;gap:10px;align-items:center;">
+          <button class="btn">Filter</button>
+          <button class="btn primary">Export JSONL</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Events</h3>
+        <table>
+          <thead><tr><th>Time</th><th>Type</th><th>Token</th><th>Summary</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td class="mono">11:02:11</td><td>consent_issued</td><td class="mono">ctok_31afc1</td><td>Issued consent for profile and prefs</td><td><span class="badge good">OK</span></td></tr>
+            <tr><td class="mono">11:03:01</td><td>read</td><td class="mono">ctok_31afc1</td><td>profile.name read (metered)</td><td><span class="badge good">PAID</span></td></tr>
+            <tr><td class="mono">11:05:44</td><td>write</td><td class="mono">ctok_31afc1</td><td>prefs.outreach_tone write (held for approval)</td><td><span class="badge warn">HOLD</span></td></tr>
+            <tr><td class="mono">11:07:09</td><td>consent_revoked</td><td class="mono">ctok_31afc1</td><td>User revoked token and purged caches</td><td><span class="badge bad">REVOKED</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script>
+  const nav = document.getElementById('nav');
+  const buttons = Array.from(nav.querySelectorAll('button'));
+  const sections = Array.from(document.querySelectorAll('.section'));
+  function activate(targetId){
+    buttons.forEach(b => b.classList.toggle('active', b.dataset.target === targetId));
+    sections.forEach(s => s.classList.toggle('active', s.id === targetId));
+  }
+  nav.addEventListener('click', (e) => {
+    const btn = e.target.closest('button');
+    if(!btn) return;
+    activate(btn.dataset.target);
+  });
+</script>
+</body>
+</html>
