@@ -2,6 +2,8 @@
 *.env
 .venv/
 **/.venv/
+.demo_logs/
+.demo_pids/
 __pycache__/
 **/__pycache__/
 *.pyc

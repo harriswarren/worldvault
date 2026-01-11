@@ -19,118 +19,144 @@ st.set_page_config(
 st.markdown(
     """
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap');
-:root {
-  --bg: #f6f4ee;
-  --text: #101010;
-  --muted: #5c5b55;
-  --border: #dad6cc;
-  --card: #fbfaf7;
-  --accent: #111111;
-  --accent-soft: #ece8df;
-  --good: #1f7a4d;
-  --warn: #b36b00;
-  --bad: #a31224;
-  --mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', monospace;
-  --sans: 'IBM Plex Sans', 'Space Grotesk', 'Helvetica Neue', sans-serif;
-  --title: 'Space Grotesk', 'IBM Plex Sans', 'Helvetica Neue', sans-serif;
+/* FORCE LIGHT THEME - MAKE EVERYTHING READABLE */
+.stApp {
+  background-color: #ffffff !important;
 }
-html, body, .stApp {
-  background: radial-gradient(900px 460px at 4% -10%, rgba(0,0,0,0.08), transparent 60%),
-              radial-gradient(520px 320px at 95% 0%, rgba(0,0,0,0.05), transparent 60%),
-              var(--bg);
-  color: var(--text);
-  font-family: var(--sans);
-}
-h1, h2, h3, h4 {
-  font-family: var(--title);
-  letter-spacing: -0.01em;
-}
-small, .muted {
-  color: var(--muted);
-}
-code, pre {
-  font-family: var(--mono);
+section.main {
+  background-color: #ffffff !important;
 }
 section.main > div {
-  padding-top: 20px;
+  padding-top: 5px;
+  background-color: #ffffff !important;
 }
+/* Force all text to be DARK */
+.stApp, .stApp * {
+  color: #000000 !important;
+}
+/* Input fields - LIGHT background, DARK text */
+input, textarea, select {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+  font-size: 15px !important;
+}
+/* Labels - DARK text */
+label {
+  color: #000000 !important;
+  font-size: 15px !important;
+}
+/* Sidebar - LIGHT background */
 div[data-testid="stSidebar"] {
-  background: linear-gradient(180deg, rgba(255,255,255,0.6), rgba(255,255,255,0.1));
-  border-right: 1px solid var(--border);
+  background-color: #f5f5f5 !important;
 }
-.wv-chip {
-  display: inline-flex;
-  align-items: center;
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  padding: 4px 10px;
-  font-size: 11px;
-  color: var(--muted);
-  background: #ffffff;
-  gap: 6px;
+div[data-testid="stSidebar"] * {
+  color: #000000 !important;
 }
-.wv-chip.good { color: var(--good); border-color: rgba(31,122,77,0.3); background: rgba(31,122,77,0.08); }
-.wv-chip.warn { color: var(--warn); border-color: rgba(179,107,0,0.3); background: rgba(179,107,0,0.08); }
-.wv-chip.bad { color: var(--bad); border-color: rgba(163,18,36,0.3); background: rgba(163,18,36,0.08); }
+/* Buttons */
+button {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+}
+/* Headings */
+h1, h2, h3, h4, h5, h6 {
+  color: #000000 !important;
+}
+/* Simple card styling */
 .wv-card {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 16px;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 6px;
   padding: 16px;
-  box-shadow: 0 12px 24px rgba(0,0,0,0.06);
-  animation: wvFade 0.6s ease both;
+  margin-bottom: 12px;
 }
-.wv-card + .wv-card { margin-top: 14px; }
 .wv-title {
-  font-size: 18px;
-  margin: 0;
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 8px;
+  color: #000000 !important;
 }
 .wv-subtitle {
-  margin: 6px 0 0;
-  color: var(--muted);
-  font-size: 13px;
+  font-size: 15px;
+  color: #666666 !important;
+  margin-bottom: 12px;
 }
 .wv-section-title {
-  font-size: 14px;
-  font-weight: 600;
-  margin: 0 0 10px 0;
+  font-size: 17px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #000000 !important;
 }
 .wv-table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 12px;
+  font-size: 14px;
+  background: white;
 }
 .wv-table th, .wv-table td {
-  border-bottom: 1px solid var(--border);
-  padding: 8px 6px;
+  border-bottom: 1px solid #ddd;
+  padding: 10px;
   text-align: left;
+  color: #000000 !important;
 }
 .wv-table th {
-  color: var(--muted);
+  background: #f8f8f8;
+  font-weight: bold;
+  color: #000000 !important;
+}
+.wv-chip {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 13px;
   font-weight: 600;
 }
+.wv-chip.good { background: #d4edda; color: #155724; }
+.wv-chip.warn { background: #fff3cd; color: #856404; }
+.wv-chip.bad { background: #f8d7da; color: #721c24; }
 .wv-pill {
-  display: inline-flex;
-  align-items: center;
-  padding: 2px 8px;
-  border-radius: 999px;
-  border: 1px solid var(--border);
-  font-size: 11px;
-  color: var(--muted);
-  background: #ffffff;
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 600;
 }
-.wv-pill.good { color: var(--good); border-color: rgba(31,122,77,0.3); background: rgba(31,122,77,0.08); }
-.wv-pill.warn { color: var(--warn); border-color: rgba(179,107,0,0.3); background: rgba(179,107,0,0.08); }
-.wv-pill.bad { color: var(--bad); border-color: rgba(163,18,36,0.3); background: rgba(163,18,36,0.08); }
-.wv-kpi { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
-.wv-kpi-box { border: 1px solid var(--border); border-radius: 14px; padding: 10px; background: #ffffff; }
-.wv-kpi-label { font-size: 11px; color: var(--muted); }
-.wv-kpi-value { font-size: 16px; margin-top: 6px; font-weight: 600; }
-.wv-mono { font-family: var(--mono); font-size: 12px; }
-@keyframes wvFade {
-  from { opacity: 0; transform: translateY(6px); }
-  to { opacity: 1; transform: translateY(0); }
+.wv-pill.good { background: #d4edda; color: #155724; }
+.wv-pill.warn { background: #fff3cd; color: #856404; }
+.wv-pill.bad { background: #f8d7da; color: #721c24; }
+.wv-kpi {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 12px;
+}
+.wv-kpi-box {
+  border: 1px solid #ddd;
+  padding: 12px;
+  border-radius: 6px;
+  background: white;
+}
+.wv-kpi-label {
+  font-size: 13px;
+  color: #666;
+  margin-bottom: 4px;
+}
+.wv-kpi-value {
+  font-size: 20px;
+  font-weight: bold;
+}
+.wv-mono {
+  font-family: monospace;
+  font-size: 14px;
+  color: #000000 !important;
+}
+/* Code blocks */
+pre, code {
+  background-color: #f5f5f5 !important;
+  color: #000000 !important;
+}
+/* Markdown */
+p, div, span {
+  color: #000000 !important;
 }
 </style>
 """,
@@ -164,7 +190,7 @@ def header(title: str, subtitle: str) -> None:
 
 with st.sidebar:
     st.image(str(LOGO_PATH))
-    st.markdown("<div class='muted'>User-owned memory with consented commerce.</div>", unsafe_allow_html=True)
+    st.markdown("<p style='font-size: 14px; color: #666; margin-bottom: 16px;'>User-owned memory with consented commerce.</p>", unsafe_allow_html=True)
     st.markdown(
         """
 <div style="display:flex; gap:6px; flex-wrap:wrap; margin:12px 0 8px;">
@@ -194,12 +220,17 @@ if section == "Issue Consent":
             act = st.text_input("Agent DID (act)", "did:cobra:agent:orchestrator:0x9f...01")
             ttl = st.selectbox("TTL", ["5 minutes", "10 minutes", "15 minutes"], index=1)
             purpose = st.text_input("Purpose", "outreach_personalization")
-            st.markdown("<div class='wv-section-title'>Scopes</div>", unsafe_allow_html=True)
+            st.markdown("<div class='wv-section-title'>Scopes & Pricing</div>", unsafe_allow_html=True)
             read_scopes = st.text_area(
                 "Read scopes",
-                "profile:name.read\nprefs:outreach_tone.read\nprefs:writing_style.read",
+                "profile:name.read ($0.002)\nprofile:company.read ($0.002)\nprefs:outreach_tone.read ($0.001)\nprefs:writing_style.read ($0.001)",
+                height=100,
             )
-            write_scopes = st.text_area("Write scopes", "prefs:outreach_tone.write")
+            write_scopes = st.text_area(
+                "Write scopes (HITL approval)",
+                "prefs:outreach_tone.write ($0.015)",
+                height=60,
+            )
             st.markdown("</div>", unsafe_allow_html=True)
 
     with col2:
@@ -250,10 +281,16 @@ elif section == "Approvals":
   <div class="wv-section-title">Pending approvals</div>
   <table class="wv-table">
     <thead>
-      <tr><th>Request</th><th>Tool</th><th>Cost</th><th>Status</th></tr>
+      <tr><th>Request</th><th>Tool</th><th>Change</th><th>Cost</th><th>Status</th></tr>
     </thead>
     <tbody>
-      <tr><td class="wv-mono">appr_91f2c3</td><td>worldvault.prefs.write</td><td>$0.010</td><td><span class="wv-pill warn">HOLD</span></td></tr>
+      <tr>
+        <td class="wv-mono">appr_b8f2</td>
+        <td>worldvault.prefs.write</td>
+        <td><span style="color: #666;">outreach_tone</span> → "direct, warm, data-driven"</td>
+        <td>$0.015</td>
+        <td><span class="wv-pill warn">HOLD</span></td>
+      </tr>
     </tbody>
   </table>
 </div>
@@ -318,6 +355,20 @@ elif section == "Audit":
     )
     st.markdown(
         """
+<div class="wv-kpi" style="margin-bottom: 14px;">
+  <div class="wv-kpi-box">
+    <div class="wv-kpi-label">Total Operations</div>
+    <div class="wv-kpi-value">12</div>
+  </div>
+  <div class="wv-kpi-box">
+    <div class="wv-kpi-label">Total Revenue</div>
+    <div class="wv-kpi-value" style="color: var(--good);">$0.047</div>
+  </div>
+  <div class="wv-kpi-box">
+    <div class="wv-kpi-label">Control Events</div>
+    <div class="wv-kpi-value">2</div>
+  </div>
+</div>
 <div class="wv-card">
   <div class="wv-section-title">Events</div>
   <table class="wv-table">
@@ -363,7 +414,7 @@ elif section == "Vault Data":
             """
 <div class="wv-card">
   <div class="wv-section-title">Pointer model</div>
-  <div class="muted">Pointers plus signed envelopes instead of raw values.</div>
+  <div style="color: #666666; font-size: 13px; margin-bottom: 8px;">Pointers plus signed envelopes instead of raw values.</div>
   <pre class="wv-mono">memmachine_pointer = {
   "type": "wv_pointer",
   "vault_ref": "wv://enc/profile.name#v3",

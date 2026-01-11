@@ -39,6 +39,7 @@ class PolicyCheckRequest(BaseModel):
     bytes: int = 0
     require_approval: bool = False
     payment_proof: Optional[str] = None
+    approval_id: Optional[str] = None
 
 
 class PolicyDecisionResponse(BaseModel):
@@ -167,7 +168,18 @@ def policy_check(request: PolicyCheckRequest) -> PolicyDecisionResponse:
     if limit_error:
         return PolicyDecisionResponse(decision="BLOCK", reason=limit_error)
 
-    if request.require_approval or request.cost_usdc > HOLD_THRESHOLD:
+    approval_status: Optional[str] = None
+    if request.approval_id:
+        approval = app.state.approvals.get(request.approval_id)
+        if not approval:
+            return PolicyDecisionResponse(decision="BLOCK", reason="approval_not_found")
+        approval_status = approval.get("status")
+        if approval_status == "DENY":
+            return PolicyDecisionResponse(decision="BLOCK", reason="approval_denied")
+        if approval_status != "APPROVE":
+            return PolicyDecisionResponse(decision="HOLD", approval_id=request.approval_id)
+
+    if (request.require_approval or request.cost_usdc > HOLD_THRESHOLD) and approval_status != "APPROVE":
         approval_id = f"appr_{uuid.uuid4().hex[:8]}"
         app.state.approvals[approval_id] = {"status": "PENDING", "request": request.model_dump()}
         _record_audit(
@@ -220,6 +232,25 @@ def policy_approve(request: ApprovalDecisionRequest) -> Dict[str, str]:
     if not approval:
         raise HTTPException(status_code=404, detail="approval_not_found")
     approval["status"] = request.decision
+    try:
+        original = approval.get("request") or {}
+        _record_audit(
+            AuditEvent(
+                ts=int(time.time()),
+                event_type="approval_decision",
+                user_did=None,
+                agent_did=None,
+                jti=None,
+                scope=original.get("scope"),
+                resource=original.get("resource"),
+                decision=request.decision,
+                cost_usdc=float(original.get("cost_usdc") or 0.0),
+                payment_ref=original.get("payment_proof"),
+                details={"approval_id": request.approval_id},
+            )
+        )
+    except Exception:
+        pass
     return {"status": approval["status"], "approval_id": request.approval_id}
 
 

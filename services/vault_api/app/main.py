@@ -107,9 +107,22 @@ app.state.jwks = _build_jwks(public_key)
 app.state.consents = {}
 app.state.revoked = set()
 app.state.vault_data = {
-    "profile.name": "Hayes",
-    "prefs.outreach_tone": "direct, friendly, concise",
-    "prefs.writing_style": "no emojis, no long dashes",
+    # Profile data (sensitive, charged per read)
+    "profile.name": "Alex Rivera",
+    "profile.email": "alex.rivera@techflow.systems",
+    "profile.company": "TechFlow Systems",
+    "profile.role": "Sales Director",
+    "profile.linkedin": "linkedin.com/in/alexrivera",
+
+    # Preferences (low-cost reads, high-cost writes)
+    "prefs.outreach_tone": "direct, friendly, data-driven",
+    "prefs.writing_style": "no emojis, brief paragraphs, bullet points for complex info",
+    "prefs.meeting_times": "Tuesdays/Thursdays 2-4pm PST",
+    "prefs.follow_up_cadence": "3 days initial, 7 days thereafter",
+
+    # Behavioral insights (premium tier)
+    "insights.response_rate": "68% within 24h",
+    "insights.preferred_channels": "email > linkedin > phone",
 }
 
 
